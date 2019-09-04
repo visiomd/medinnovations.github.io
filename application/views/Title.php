@@ -1,1 +1,0 @@
-<div class ="message-centered"><?= $pageTitle; ?></div>
