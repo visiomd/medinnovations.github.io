@@ -1,0 +1,1 @@
+<div class="alert alert-success"><?= $text['ALLREADY_LOGGED_IN']; ?></div>

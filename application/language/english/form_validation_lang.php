@@ -1,0 +1,27 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+$lang['required']				= 'Field &quot;%s&quot; is required.';
+$lang['isset']					= 'Field &quot;%s&quot; should contain value.';
+$lang['valid_email']			= 'Field &quot;%s&quot; should contain valid e-mail.';
+$lang['valid_emails']			= 'Field &quot;%s&quot; should contain valid e-mails.';
+$lang['valid_url']				= 'Field &quot;%s&quot; should contain valid URL.';
+$lang['valid_ip']				= 'Field &quot;%s&quot; should contain valid IP.';
+$lang['min_length']				= 'Field &quot;%s&quot; should be not less than %s symbols.';
+$lang['max_length']				= 'Field &quot;%s&quot; should be not more than %s symbols.';
+$lang['exact_length']			= 'Field &quot;%s&quot; should equal %s symbols.';
+$lang['alpha']					= 'Field &quot;%s&quot; should contain only буквы.';
+$lang['alpha_numeric']			= 'Field &quot;%s&quot; should содержать только буквы и цифры.';
+$lang['alpha_dash']				= 'Field &quot;%s&quot; should содержать только буквы, цифры, символы подчеркивания и тире.';
+$lang['numeric']				= 'Field &quot;%s&quot; should содержать правильное число.';
+$lang['is_numeric']				= 'Field &quot;%s&quot; should содержать правильное число.';
+$lang['integer']				= 'Field &quot;%s&quot; should содержать целое число.';
+$lang['regex_match']			= 'Field &quot;%s&quot; заполнено в неверном формате.';
+$lang['matches']				= 'Field &quot;%s&quot; должно соответствовать значению в поле &quot;%s&quot;.';
+$lang['is_unique'] 				= 'Field &quot;%s&quot; должно содержать уникальное значение.';
+$lang['is_natural']				= 'Field &quot;%s&quot; должно содержать положительное число.';
+$lang['is_natural_no_zero']		= 'Field &quot;%s&quot; должно содержать число больше нуля.';
+$lang['decimal']				= 'Field &quot;%s&quot; должно содержать десятичное число.';
+$lang['less_than']				= 'Field &quot;%s&quot; должно содержать число меньшее чем %s.';
+$lang['greater_than']			= 'Field &quot;%s&quot; должно содержать число большее чем %s.';
+$lang['less_than_equal_to']		= "Field &quot;%s&quot; должно содержать число меньшее или равное %s.";
+$lang['greater_than_equal_to']	= "Field &quot;%s&quot; должно содержать число большее или равное %s.";
