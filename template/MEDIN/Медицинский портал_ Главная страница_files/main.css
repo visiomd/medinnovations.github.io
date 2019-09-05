@@ -1,0 +1,109 @@
+	a.nl-color. a.nl-color:hover {
+	  color:  red;
+	  text-shadow: 0 0 30px  #92DADD;
+	}
+	.oneNav {
+	  opacity: 1;
+	  transition: all 1s ease-in-out;
+	  -webkit-transition: all 1s ease-in-out; /** Chrome & Safari **/
+	  -moz-transition: all 1s ease-in-out; /** Firefox **/
+	  -o-transition: all 1s ease-in-out; /** Opera **/
+	}
+	
+	#homePage {
+	  display: block;
+	  transition: all 1s ease-in-out;
+	  -webkit-transition: all 1s ease-in-out; /** Chrome & Safari **/
+	  -moz-transition: all 1s ease-in-out; /** Firefox **/
+	  -o-transition: all 1s ease-in-out; /** Opera **/
+	}
+
+	#aboutPage {
+	  display: none;
+	  transition: all 1s ease-in-out;
+	  -webkit-transition: all 1s ease-in-out; /** Chrome & Safari **/
+	  -moz-transition: all 1s ease-in-out; /** Firefox **/
+	  -o-transition: all 1s ease-in-out; /** Opera **/
+	}
+	#samplePage {
+	  display: none;
+	  transition: all 1s ease-in-out;
+	  -webkit-transition: all 1s ease-in-out; /** Chrome & Safari **/
+	  -moz-transition: all 1s ease-in-out; /** Firefox **/
+	  -o-transition: all 1s ease-in-out; /** Opera **/
+	}
+	#contactPage {
+	  display: none;
+	  transition: all 1s ease-in-out;
+	  -webkit-transition: all 1s ease-in-out; /** Chrome & Safari **/
+	  -moz-transition: all 1s ease-in-out; /** Firefox **/
+	  -o-transition: all 1s ease-in-out; /** Opera **/
+	}
+
+	#nabBarEl {
+	transition: all 1s ease-in-out;
+	-webkit-transition: all 1s ease-in-out; /** Chrome & Safari **/
+	-moz-transition: all 1s ease-in-out; /** Firefox **/
+	-o-transition: all 1s ease-in-out; /** Opera **/
+	}
+
+	.jumbotron {
+	background-color: transparent;
+	padding-top: 0px;
+    	padding-bottom: 0px;
+	}
+
+
+@media (min-width: 600px) {  /* для разрешения экрана от 600 пикселей */
+	.placeholder{
+	  display:inline-block;
+	  width:600px;
+	  height:300px;
+	  box-sizing:border-box;
+	  margin-top:40px;
+	  position:relative;
+	}
+
+	.cell, .blind, .blindImg{
+	  position:absolute;
+	  top:0;
+	  height:100%;
+	  box-sizing:border-box;
+	}
+
+	.blind{
+	  overflow:hidden;
+	}
+
+	.blindImg{
+	  width:100%;
+	  background-size:cover;
+	}
+}
+@media  (min-width: 320px) and (max-width: 599px) {  /* для разрешения экрана от 360 до 599 пикселей */
+	.placeholder{
+	  display:inline-block;
+	  width:320px;
+	  height:160px;
+	  box-sizing:border-box;
+	  margin-top:40px;
+	  position:relative;
+	}
+
+	.cell, .blind, .blindImg{
+	  position:absolute;
+	  top:0;
+	  height:100%;
+	  box-sizing:border-box;
+	}
+
+	.blind{
+	  overflow:hidden;
+	}
+
+	.blindImg{
+	  width:100%;
+	  background-size:cover;
+	}
+}
+/** Конец Жалюзи **/

@@ -1,13 +1,11 @@
  <script type="text/javascript">
 var deleteTaskPopup = function(id) {
-
   $.ajax({ type: "GET",   
            url: "http://www.medinnovations.ru/Tasks/delete/"+id,
            success: function(msg) {
-             document.location.reload(true);        
-            }      
-      });
-  
+              document.location.reload(true);        
+           }      
+  });
 };
 </script>
 <script type="text/javascript">
@@ -145,18 +143,20 @@ var deleteTaskPopup = function(id) {
                 </div>
                 <div class="card-action">
                     <a href="<?= base_url();?>Tasks/provideAttachments/<?=$t['id']; ?>"><i class="material-icons">attach_file</i>Работа с файлами</a>
-                    <a class="modal-trigger" href="#modalDeelete1"><i class="material-icons">delete</i> Удалить</a>
+                    <a class="modal-trigger" href="#modalDeelete<?= $t['id']; ?>"><i class="material-icons">delete</i> Удалить</a>
 
-                    <div id="modalDeelete1" class="modal modal-fixed-footer">
+                    <div id="#modalDeelete<?= $t['id']; ?>" class="modal modal-fixed-footer">
                       <div class="modal-content">
                         <h4><i class="material-icons">backspace</i> Удаление заявки  №  <?= $t['id']; ?></h4>
                        
                         <div class="input-field col s12">
                           <select multiple>
                             <option value="" disabled>Причины</option>
-                            <option value="1">Причина 1</option>
-                            <option value="2">Причина 2</option>
-                            <option value="3">Причина 3</option>
+                            <option value="В ходе загрузки прошел сбой. Данные небыли доставлены в полном объёме.">В ходе загрузки прошел сбой. Данные не были доставлены в полном объёме.</option>
+                            <option value="Заключение и медицинские изображения не соответствуют друг другу.">Заключение и медицинские изображения не соответствуют друг другу.</option>
+                            <option value="Отсутствует заключение к предоставленным медицинским изображениям.">Отсутствует заключение к предоставленным медицинским изображениям.</option>
+                            <option value="Были выбраны области для исследования отсутствующее на предоставленных медицинских изображениях.">Были выбраны области для исследования отсутствующее на предоставленных медицинских изображениях.</option>
+                            <option value="Предоставленные медицинские изображения не входят в перечень модальностей по которым ведется обработка.">Предоставленные медицинские изображения не входят в перечень модальностей по которым ведется обработка.</option>
                           </select>
                           <label>Причины удаления</p></label>
                         </div>
@@ -182,7 +182,6 @@ var deleteTaskPopup = function(id) {
         </div>
 
 <?php endif; ?>
-
 <?php endforeach ; ?>
 </li>
  </ul>
@@ -616,26 +615,62 @@ var deleteTaskPopup = function(id) {
                     </ul>
                 </div>
                 <div class="card-action">
-                    <a href="<?= base_url();?>Tasks/provideAttachments/<?=$t['id']; ?>">Работа с файлами</a>
-                </div>
+                    <a href="<?= base_url();?>Tasks/provideAttachments/<?=$t['id']; ?>"><i class="material-icons">attach_file</i> Работа с файлами</a>
+                    <a class="modal-trigger" href="#deleteModal<?= $t['id']; ?>"><i class="material-icons">delete</i> Удалить</a>
+               </div>
             </div>
 
 
+                <div id="deleteModal<?= $t['id']; ?>" class="modal modal-fixed-footer">
+                  <div class="modal-content">
+                    <h4><i class="material-icons">backspace</i> Удаление заявки  №  <?= $t['id']; ?></h4>
+                    <div class="input-field col s12">
+                      <select multiple>
+                        <option value="" disabled>Причины</option>
+                        <option value="В ходе загрузки прошел сбой. Данные небыли доставлены в полном объёме.">В ходе загрузки прошел сбой. Данные не были доставлены в полном объёме.</option>
+                        <option value="Заключение и медицинские изображения не соответствуют друг другу.">Заключение и медицинские изображения не соответствуют друг другу.</option>
+                        <option value="Отсутствует заключение к предоставленным медицинским изображениям.">Отсутствует заключение к предоставленным медицинским изображениям.</option>
+                        <option value="Были выбраны области для исследования отсутствующее на предоставленных медицинских изображениях.">Были выбраны области для исследования отсутствующее на предоставленных медицинских изображениях.</option>
+                        <option value="Предоставленные медицинские изображения не входят в перечень модальностей по которым ведется обработка.">Предоставленные медицинские изображения не входят в перечень модальностей по которым ведется обработка.</option>
+                      </select>
+                      <label>Причины удаления</p></label>
+                    </div>
+                    <div class="row">
+                      <div class="input-field col s12">
+                        <textarea id="cause" class="materialize-textarea" data-length="240"></textarea>
+                        <label for="cause">Опишите более развернуто проблему</label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col s10 offset-s1">
+                        <blockquote><p class="flow-text">Сообщение будет отправлено на почту <?= $emails[$t['id']]; ?></p></blockquote>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <a href="#!" class="modal-close"><i class="material-icons">error</i> Передумать</a>
+                    <a onclick="deleteTaskPopup(<?= $t['id']; ?>)" id="deleteAssignment"><i class="material-icons">done</i> Удалить</a>
+                  </div>
+                </div>
+                
                 <div class="modal-footer">
                   <a href="#!" class="modal-close waves-effect waves-green btn-flat">Ок</a>
                 </div>
+                        
+
 
 
             </div>
             </div>
         </div>
-
 <?php endif; ?>
 
 <?php endforeach ; ?>
 
 </li>
  </ul>
+
+
 </div>
 
        <div class="col s6 m4">
