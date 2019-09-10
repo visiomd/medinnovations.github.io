@@ -12,7 +12,7 @@ class Main extends MY_Controller {
         $this->_defineLanguage($lang);
         $text = $this->lang->{'language'};
         $data = array('css'                => ['main.css'],
-		      'js'                             => ['TweenMax.min.js', 'placeholder.js'],
+		                  'js'                 => ['TweenMax.min.js', 'placeholder.js', 'main.js'],
                       'lang'               => $lang,
                       'url'                => $this->_defineURL(__FUNCTION__),
                       'text'               => $text,

@@ -1,3 +1,7 @@
+<?php
+$attr = array('class' => 'validate');
+echo form_open('Login/'.$lang, $attr); 
+?>
 <div class="row">
     <div class="col s4 offset-s4">
         <h2><i class="medium material-icons">person_pin</i>Страница входа</h2>
@@ -6,11 +10,6 @@
 </div>
 <div class="row">
     <div class="input-field col s4 offset-s4">
-<?php
-$attr = array('class' => 'validate',
-               'role' => 'form');
-echo form_open('Login/'.$lang, $attr); 
-?>
     <label for="email" data-error="<?php echo form_error('email'); ?>">Email:</label>
     <?php
         $attr = array ('placeholder' => "E-mail",
@@ -20,8 +19,8 @@ echo form_open('Login/'.$lang, $attr);
     </div>
 </div>
 <div class="row">
-        <div class="input-field col s4 offset-s4">
-<label for="password"><?= $text['PASSWORD'] ;?>:</label>
+    <div class="input-field col s4 offset-s4">
+    <label for="password"><?= $text['PASSWORD'] ;?>:</label>
     <?php
         $attr = array ('placeholder' => $text['PASSWORD'],
                        'class'       => 'form-control',

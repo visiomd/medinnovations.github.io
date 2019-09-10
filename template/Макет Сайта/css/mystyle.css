@@ -1,0 +1,143 @@
+	/* CSS Document */
+	@import url("https://fonts.googleapis.com/css?family=Cormorant+Unicase");
+	body {
+		background: url("../images/fon.jpg") no-repeat center center fixed;
+		-moz-background-size: 100%; /* Firefox 3.6+ */
+		-webkit-background-size: 100%; /* Safari 3.1+ и Chrome 4.0+ */
+		-o-background-size: 100%; /* Opera 9.6+ */
+		background-size: cover; /* Современные браузеры */
+		font-family: 'Cormorant Unicase', serif;
+		font-size: 1.4rem;
+	}
+
+	h1 {
+		font-size: 2rem;
+		
+	}
+
+	hr {
+		margin-top: 0.1rem;
+		margin-bottom: 0.1rem;
+	}
+	footer {
+	  position: absolute;
+	  bottom: 0;
+	}
+	.oneNav {
+	  /*position: absolute;*/
+	  visibility: visible;
+	  opacity: 1;
+	  transition: all 1s ease-in-out;
+	  -webkit-transition: all 1s ease-in-out; /** Chrome & Safari **/
+	  -moz-transition: all 1s ease-in-out; /** Firefox **/
+	  -o-transition: all 1s ease-in-out; /** Opera **/
+	}
+	
+	#homePage {
+	  visibility: visible;
+	  opacity: 1;
+	  display: block;
+	  transition: all 1s ease-in-out;
+	  -webkit-transition: all 1s ease-in-out; /** Chrome & Safari **/
+	  -moz-transition: all 1s ease-in-out; /** Firefox **/
+	  -o-transition: all 1s ease-in-out; /** Opera **/
+	}
+
+	#aboutPage {
+	  visibility: hidden;
+	  opacity: 0;
+	  height: 0px;
+	  transition: all 1s ease-in-out;
+	  -webkit-transition: all 1s ease-in-out; /** Chrome & Safari **/
+	  -moz-transition: all 1s ease-in-out; /** Firefox **/
+	  -o-transition: all 1s ease-in-out; /** Opera **/
+	}
+	#samplePage {
+	  visibility: hidden;
+	  opacity: 0;
+	  height: 0px;
+	  transition: all 1s ease-in-out;
+	  -webkit-transition: all 1s ease-in-out; /** Chrome & Safari **/
+	  -moz-transition: all 1s ease-in-out; /** Firefox **/
+	  -o-transition: all 1s ease-in-out; /** Opera **/
+	}
+	#contactPage {
+	  visibility: hidden;
+	  opacity: 0;
+	  height: 0px;
+	  transition: all 1s ease-in-out;
+	  -webkit-transition: all 1s ease-in-out; /** Chrome & Safari **/
+	  -moz-transition: all 1s ease-in-out; /** Firefox **/
+	  -o-transition: all 1s ease-in-out; /** Opera **/
+	}
+
+	#nabBarEl {
+	visibility: hidden;
+	opacity: 0;
+	transition: all 1s ease-in-out;
+	-webkit-transition: all 1s ease-in-out; /** Chrome & Safari **/
+	-moz-transition: all 1s ease-in-out; /** Firefox **/
+	-o-transition: all 1s ease-in-out; /** Opera **/
+	}
+
+	.jumbotron {
+		background-color: transparent;
+		padding-top: 0px;
+    	padding-bottom: 0px;
+	}
+
+/** Жалюзи **/
+
+@media (min-width: 600px) {  /* для разрешения экрана от 600 пикселей */
+	.placeholder{
+	  display:inline-block;
+	  width:600px;
+	  height:300px;
+	  box-sizing:border-box;
+	  margin-top:40px;
+	  position:relative;
+	}
+
+	.cell, .blind, .blindImg{
+	  position:absolute;
+	  top:0;
+	  height:100%;
+	  box-sizing:border-box;
+	}
+
+	.blind{
+	  overflow:hidden;
+	}
+
+	.blindImg{
+	  width:100%;
+	  background-size:cover;
+	}
+}
+@media  (min-width: 320px) and (max-width: 599px) {  /* для разрешения экрана от 360 до 599 пикселей */
+	.placeholder{
+	  display:inline-block;
+	  width:320px;
+	  height:160px;
+	  box-sizing:border-box;
+	  margin-top:40px;
+	  position:relative;
+	}
+
+	.cell, .blind, .blindImg{
+	  position:absolute;
+	  top:0;
+	  height:100%;
+	  box-sizing:border-box;
+	}
+
+	.blind{
+	  overflow:hidden;
+	}
+
+	.blindImg{
+	  width:100%;
+	  background-size:cover;
+	}
+}
+/** Конец Жалюзи **/

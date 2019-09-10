@@ -1,0 +1,34 @@
+#home {
+  display: block;
+  transition: all 1s ease-in-out;
+ -webkit-transition: all 1s ease-in-out; 
+ -moz-transition: all 1s ease-in-out; 
+ -o-transition: all 1s ease-in-out; /** Opera **/
+}
+#about {
+  display: none;
+  transition: all 1s ease-in-out;
+  -webkit-transition: all 1s ease-in-out; 
+  -moz-transition: all 1s ease-in-out; 
+  -o-transition: all 1s ease-in-out; /** Opera **/
+}
+#examples {
+  display: none;
+  transition: all 1s ease-in-out;
+  -webkit-transition: all 1s ease-in-out; /** Chrome & Safari **/
+  -moz-transition: all 1s ease-in-out; 
+  -o-transition: all 1s ease-in-out; /** Opera **/
+}
+#contact {
+  display: none;
+  transition: all 1s ease-in-out;
+  -webkit-transition: all 1s ease-in-out; /** Chrome & Safari **/
+  -moz-transition: all 1s ease-in-out; 
+  -o-transition: all 1s ease-in-out; /** Opera **/
+}
+.w50 {
+  width: 50%;
+}
+.w70 {
+  width: 70%;
+}
