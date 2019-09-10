@@ -26,22 +26,22 @@
           <table class="centered">
           <thead class="teal lighten-4">
             <tr>
-                <th><h5><i class="material-icons">format_list_numbered</i> Заявка</h5></th>
-                <th><h5><i class="material-icons">attach_money</i> Цена</h5></th>
-                <th><h5><i class="material-icons">room_service </i>Услуга </h5></th>
-                <th><h5><i class="material-icons">link </i>Ссылка на оплату </h5></th>
+                <th><i class="material-icons">format_list_numbered</i> Заявка</th>
+                <th>Цена (рублей)</th>
+                <th><i class="material-icons">room_service </i>Услуга </th>
+                <th><i class="material-icons">link </i>Ссылка на оплату </th>
             </tr>
           </thead>
 
           <tbody>
             <tr>
-              <td><h5> № <?= $id; ?></h5></td>
-              <td><h5>...</h5></td>
-              <td><h5><?= $inv_desc; ?></h5></td>
+              <td>№ <?= $id; ?></td>
+              <td>..</td>
+              <td><?= $inv_desc; ?></td>
               <td>
                 <h5>Введите цену, указанную в договоре</h5>
                 <?php
-                  print "<html><script language=JavaScript ".
+                  print "<html><script ".
                   "src='https://auth.robokassa.ru/Merchant/PaymentForm/FormFLS.js?".
                   "MerchantLogin=$mrh_login&DefaultSum=$def_sum&InvId=$inv_id&Receipt=$Receipt".
                   "&Description=$inv_desc&SignatureValue=$crc&Shp_service=$Shp_service&Shp_user=$Shp_user'></script></html>";
@@ -56,9 +56,10 @@
     <li>
       <div class="collapsible-header">
         <h5><i class="material-icons">share</i>Поделиться ссылкой с другом </h5>
-        <div class="col s4 offset-s3">         <h5>
-        <script type="text/javascript" src="https://vk.com/js/api/share.js?95" charset="windows-1251"></script>
-        <script type="text/javascript">
+        <div class="col s4 offset-s3">
+        <h5>
+        <script src="https://vk.com/js/api/share.js?95"></script>
+        <script>
             document.write(VK.Share.button(false,{type: "custom", text: "<img src=\"https://vk.com/images/share_32.png\" width=\"32\" height=\"32\" />"}));
         </script> 
         </h5>
@@ -68,11 +69,11 @@
       </div>
       <div class="collapsible-body">
         <input type="text" value="http://www.medinnovations.ru/Payment/thirdpartyPayment">
-        <a href="http://qrcoder.ru" target="_blank"><img src="http://qrcoder.ru/code/?http%3A%2F%2Fwww.medinnovations.ru%2FPayment%2FthirdpartyPayment&4&0" width="164" height="164" border="0" title="QR код"></a>
+        <a href="#" target="_blank"><img class="qrcode" src="http://qrcoder.ru/code/?http%3A%2F%2Fwww.medinnovations.ru%2FPayment%2FthirdpartyPayment&4&0" width="164" height="164" border="0" title="QR код"></a>
       </div>
     </li>
 </ul>
-<script type="text/javascript">
+<script>
   $(document).ready(function(){
     $('.collapsible').collapsible();
   });

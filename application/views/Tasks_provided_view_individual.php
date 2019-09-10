@@ -119,7 +119,7 @@
                     <a class="waves-effect waves-light btn btn-small" href="http://medinnovations.ru/Xuploader.exe">Windows</a>    
                 </div>
             </div>  
-              <div class="collapsible-header"><i class="material-icons">drafts</i><a href="http://www.medinnovations.ru/Offer">Офферта</a></div>
+              <div class="collapsible-header"><i class="material-icons">drafts</i><a href="http://www.medinnovations.ru/Offer">Оферта</a></div>
             </li>    
             <li>
   

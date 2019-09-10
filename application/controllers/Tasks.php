@@ -7,43 +7,22 @@ class Tasks extends MY_Controller {
         parent::__construct();
         $this->_defineLanguage($lang);
         $this->text = $this->lang->{'language'};
-        $this->data = array('lang'              => $lang,
-                            'text'              => $this->text,
-                            'role'              => $this->_defineRole(),
-                            'username'          => $this->data['username']);
-
-        $this->load->model('tasks_model');
     }
-    public function Renderer() {
+    /*public function Renderer() {
         $this->data['url'] = $this->_defineURL(__FUNCTION__);
         $this->data['content'] = $this->_defineRoleView(__FUNCTION__, false);
         $this->data['tag_title'] = 'Ваши задания';
         $this->load->view($this->template, $this->data);
-    }
-    public function Individual() 
-    {
-        $payments = $this->payments_model->getFinishedPayments();
-        $tasks = $this->tasks_model->getTasksFilteredByUsername($filterParam);
-        foreach ($tasks["Заявки"] as $key => $t) {
-            $tasks["Заявки"][$key]['paid'] = "No";
-        }
-        foreach ($tasks["Заявки"] as $key => $t) {
-           foreach ($payments as $key1 => $p) {
-                if ($t['id'] == $p['id']) {
-                    $tasks["Заявки"][$key]['paid'] = "Yes";
-                }
-           }
-        }
-    }
+    }*/
     public function Supervisor($filterName = " ", $filterParam = " ")
     {
+        $this->load->model('tasks_model');
         $this->load->model('payments_model');
         $this->load->model('login_model');
         $this->load->model('t_events_model');
 
         $payments = $this->payments_model->getFinishedPayments();
         $statuses  = $this->t_events_model->getAllRecordsAscEvents();
-
        
         $tasksYear = $this->tasks_model->getTasksFilteredByYear();
         $tasksQuarter = $this->tasks_model->getTasksFilteredByQuarter();
@@ -53,25 +32,30 @@ class Tasks extends MY_Controller {
         switch ($filterName) {
             case 'year':
                 $tasks = $tasksYear;
+                $filter = "Год";
                 break;
             case 'quarter':
                 $tasks = $tasksQuarter;
+                $filter = "Квартал";
                 break;
             case 'month':
                 $tasks = $tasksMonth;
+                $filter = "Месяц";
                 break;
             case 'id':
                 $tasks = $this->tasks_model->getTasksFilteredById($filterParam);
+                $filter = "ID пользователя";
                 break;
             case 'username':
                 $tasks = $this->tasks_model->getTasksFilteredByUsername($filterParam);
+                $filter = "Имя пользователя";
                 break;
             default:
                 $tasks =  $tasksTotal;
+                $filter = "Весь период";
         }
 
         $statusesFiltered = [];
-        $emails = [];
 
         foreach ($statuses as $key => $value) {
           $statusesFiltered[$value['taskId']] = [];
@@ -81,7 +65,7 @@ class Tasks extends MY_Controller {
         }
 
         foreach ($tasks["Заявки"] as $key => $t) {
-          $emails[$t['id']] = $this->login_model->getSingleRecord(null, ['name' => $t['customer']])['email'];
+          $tasks["Заявки"][$key]['email']= $this->login_model->getSingleRecord(null, ['name' => $t['customer']])['email'];
         }
         
         foreach ($tasks["Заявки"] as $key => $t) {
@@ -99,20 +83,25 @@ class Tasks extends MY_Controller {
         $tasksJs = 'tasks.js';
 
        
-        $this->data['js'] = [$moment, $tasksJs];
-        $this->data['tasks'] = $tasks;
-        $this->data['tasksEvents'] = $statuses;
-        $this->data['tasksEventsFiltered'] = $statusesFiltered;
-        $this->data['url'] = $this->_defineURL(__FUNCTION__);
-        $this->data['content'] = $this->_defineRoleView(__FUNCTION__, false);
-        $this->data['tag_title'] = 'Список заданий';
-        $this->data['report'] = ['year'     => $tasksYear,
-                                 'quarter'  => $tasksQuarter,
-                                 'month'    =>  $tasksMonth,
-                                 'total'    => $tasksTotal];
-        $this->data['emails'] = $emails;
-        $this->load->view($this->template, $this->data);
+        $this->data = ['lang'              => $lang,
+                       'text'              => $this->text,
+                       'role'              => $this->_defineRole(),
+                       'username'          => $this->data['username'],
+                       'tasks'             => $tasks,
+                       'events'            => $events,
+                       'content'           => $this->_defineRoleView(__FUNCTION__, false),
+                       'url'               => $this->_defineURL(__FUNCTION__),
+                       'filter'            => $filter,
+                       'tag_title'         => 'Список заданий',
+                       'report'            => ['year'     => $tasksYear,
+                                               'quarter'  => $tasksQuarter,
+                                               'month'    =>  $tasksMonth,
+                                               'total'    => $tasksTotal],
+                        'js'               => [$moment, $tasksJs],
+                        'tasksEventsFiltered' => $statusesFiltered
+                     ];
 
+        $this->load->view($this->template, $this->data);
     }
     public function askQuestion() {
         $question = $_POST['question'];
@@ -123,7 +112,6 @@ class Tasks extends MY_Controller {
         }
     }
     public function generateGooogleDoc($data, $date) {
-
       $page = 'https://script.google.com/macros/s/AKfycbzh8CPJIp_9cBIQd4DzsRahG7wkpzgydWhMZb5WRjA/dev'.'?numberReport='.$data.'&dateReport='.$date;
       redirect($page);
     }
@@ -134,7 +122,7 @@ class Tasks extends MY_Controller {
             $taskExists = $this->tasks_model->exists($id);
             if ($taskExists == true) {
                 $this->tasks_model->updateCertainField($id, 'Удалено', 'status');
-                if ($this->data['role'] === 'Worker') {
+                /*if ($this->data['role'] === 'Worker') {
                     echo "OK";
                 }
                 elseif ($this->data['role'] === 'Individual' ||
@@ -144,15 +132,14 @@ class Tasks extends MY_Controller {
                     $this->data['role'] === 'Doctor')
                 {
                     echo "OK";
-                }
+                }*/
             }
             else {
                 show_404();
             }
     }
 
-
-    public function take($id) {
+    /*public function take($id) {
         $name = $this->_defineName();
         $this->tasks_model->updateDbField($id, $name);
         redirect('Tasks');
@@ -164,7 +151,7 @@ class Tasks extends MY_Controller {
         $this->tasks_model->updateCertainField($id, 'pending', 'processed');
         $this->_sendEndTaskNote($user[0], $id);
         redirect('Tasks/received');
-    }
+    }*/
     public function provided($lang='') {
         //Меню
         $role = $this->_defineRole();
@@ -224,7 +211,7 @@ class Tasks extends MY_Controller {
         $this->data['css'] = ['background.css', 'provided.css'];
         $this->load->view($this->template, $this->data);
     }
-    public function changePrice($taskId) {
+    /*public function changePrice($taskId) {
         $this->load->model('login_model');
         $task = $this->tasks_model->showById($taskId);
         $this->data['url'] = $this->_defineURL(__FUNCTION__);
@@ -247,8 +234,8 @@ class Tasks extends MY_Controller {
 
         }
 
-    }
-    public function changeDescription($taskId) {
+    }*/
+    /*public function changeDescription($taskId) {
         $this->data['menu'] = null;
         $task = $this->tasks_model->showById($taskId);
         $this->data['url'] = $this->_defineURL(__FUNCTION__);
@@ -266,7 +253,7 @@ class Tasks extends MY_Controller {
             redirect('Tasks/provided'.$lang);
         }
 
-    }
+    }*/
     public function ajaxChangeStatus($taskId)
     {
         $this->load->model('t_events_model');
@@ -359,7 +346,7 @@ class Tasks extends MY_Controller {
         }
 
     }
-    public function changeReceipts($taskId) {
+    /*public function changeReceipts($taskId) {
         $receipts = [];
         if (empty($_POST['column'])) {
             $receipts = '0,0,0,0,0';
@@ -385,7 +372,7 @@ class Tasks extends MY_Controller {
         }
         redirect('Tasks/'.$lang);
 
-    }
+    }*/
     public function changeOrgan($taskId) {
         $task = $this->tasks_model->showById($taskId);
         $this->data['url'] = $this->_defineURL(__FUNCTION__);
