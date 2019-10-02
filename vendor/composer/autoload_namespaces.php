@@ -6,5 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Yandex\\Geo' => array($vendorDir . '/yandex/geo/source'),
+    'PHPExcel' => array($vendorDir . '/phpoffice/phpexcel/Classes'),
 );
