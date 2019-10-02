@@ -2,11 +2,16 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MY_Controller extends CI_Controller {
-	public $template;
+	  public $template;
+    private $html;
+    private $user;
+    private $data;
+    private $language = 'russian';
     public function __construct() 
     {
         parent::__construct();
-        $this->template = 'templates/master';
+        $this->template = 'templates/layout';
+
         if ($this->load->library('session')) {
             $this->data['username'] = $this->session->userdata('username');
             $this->session->set_userdata('username', $this->data['username']);
@@ -24,8 +29,6 @@ class MY_Controller extends CI_Controller {
         if ($lang === '') {
             $lang = 'russian';
         }
-        //$content = __FUNCTION__;
-        //$this->lang->load($content, $lang);
         $this->lang->load('content', $lang);
         $this->config->set_item('language', $lang);     
     }
@@ -78,15 +81,11 @@ class MY_Controller extends CI_Controller {
     public function _defineRoleView($fn, $common) 
     {
         $public = ['index', 'show', 'organizations', 'request', 'instruction', 'services', 'success', 'calendar', 'science', 'findCouncil', 'council', 'addModeratorData', 'getStructure', 'addDoctor', 'getStatistics', 'thirdpartyPayment', 'Renderer', 'Supervisor'];
-        $publicRestrictions = ['Program_index', 'Profile_index', 'Tasks_index', 'Tasks_show', 'Services_index', 'Articles_index', 'Moderators_index', 'Doctors_index'];
+        $publicRestrictions = ['Program_index', 'Profile_index', 'Tasks_index', 'Tasks_show', 'Services_index', 'Articles_index', 'Moderators_index', 'Doctors_index', 'Tasks_Supervisor'];
         $private = ['Guest'        => ['None'],
-                    'Worker'       => ['Articles_index', 'Tasks_received', 'Tasks_index', 'Tasks_show', 'Tasks_addComment'],
                     'Individual'   => ['Program_index', 'Articles_index','Tasks_provided', 'Tasks_delete', 'Services_index', 'Tasks_provideAttachments'],
                     'Organization' => ['Program_index', 'Articles_index','Tasks_provided', 'Tasks_delete', 'License_create', 'License_update', 'Services_index'],
-                    'Supervisor'   => ['Program_index', 'Articles_index','Tasks_index', 'Users_createWorker', 'Services_index', 'Tasks_merge', 'Tasks_changePrice', 'Tasks_changeOrgan', 'Tasks_changeStatus', 'Tasks_provideAttachments'],
-                    'Admin'        => ['Moderators_index','Moderators_create', 'Moderators_statistics', 'Doctors_create','Tasks_provided', 'Tasks_changePrice', 'Doctors_index'],
-                    'Doctor'       => ['Doctors_cabinet','Tasks_provided', 'Services_VizualizationAndProcessing'],
-                    'Moderator'    => ['Tasks_provided', 'Services_VizualizationAndProcessing']
+                    'Supervisor'   => ['Program_index', 'Articles_index','Tasks_index', 'Users_createWorker', 'Services_index', 'Tasks_merge', 'Tasks_changePrice', 'Tasks_changeOrgan', 'Tasks_changeStatus', 'Tasks_provideAttachments', 'Tasks_Supervisor'],
                     ];
 
           $className = get_class($this);
@@ -130,93 +129,10 @@ class MY_Controller extends CI_Controller {
           }
         return $content;
     }
-    public function _defineHeaderLinks($lang) 
-    { 
-       $role = $this->_defineRole();
-       if (isset($role)) 
-       {
-           if($lang === '')
-           {
-               $headerControllers = array('Guest'        => null,
-                                          'Adm'          => array('Profile', 'Tasks', 'Workers'),
-                                          'Worker'       => array('Profile', 'Tasks', 'Tasks/received'),
-                                          'Individual'   => array('Profile', 'Tasks/provided','Uploading'),
-                                          'Organization' => array('Profile', 'Tasks/provided','Uploading'));
-           }
-           else 
-           {
-               $headerControllers = array('Guest'        => null,
-                                          'Adm'          => array('Profile/'.$lang, 'Tasks/'.$lang, 'Workers/'.$lang),
-                                          'Worker'       => array('Profile/'.$lang, 'Tasks/'.$lang, 'Tasks/received/'.$lang),
-                                          'Individual'   => array('Profile/'.$lang, 'Tasks/provided/'.$lang,'Uploading/'.$lang),
-                                          'Organization' => array('Profile/'.$lang, 'Tasks/provided/'.$lang,'Uploading/'.$lang));  
-           }
-           return $headerControllers[$role];
-       }
-      
-        
-        
-        
-    }
-    public function _defineHeaderText($lang) 
-    {
-        $headerView = array('Guest'        => null,
-                            'Adm'          => array($lang['HEADER_PROFILE'], $lang['HEADER_TASKS'], $lang['HEADER_WORKERS']),
-                            'Worker'       => array($lang['HEADER_PROFILE'], $lang['HEADER_TASKS'], $lang['HEADER_MYTASKS']),
-                            'Individual'   => array($lang['HEADER_PROFILE'], $lang['HEADER_MYTASKS'], $lang['HEADER_DOWNLOAD']),
-                            'Organization' => array($lang['HEADER_PROFILE'], $lang['HEADER_MYTASKS'], $lang['HEADER_DOWNLOAD']));
-        $role = $this->_defineRole();
-        if (isset($role)) 
-        {
-            return $headerView[$role];
-        }
-    }
-   
-     public function _setFolderStatus($folderName, $status, $name) 
-     {
-        $folders = $this->_getShortNames();
-        $dividers = array(); 
-        $calibrated = false;
-        $processed = false;
-        for ($i = 0, $c = strlen($folderName); $i < $c ; $i++)
-        {
-            if ($folderName[$i] === '_')
-            {
-                array_push($dividers, $i);
-            }  
-        }
-        if ($status === 'calibrated') 
-        {
-            $folderName = substr($folderName, 0, $dividers[2]+1).$name.substr($folderName, $dividers[2]+5, strlen($folderName)-$dividers[2]-5);
-            return $folderName;
-        }
-        else if($status === 'processed')
-        {
-          $folderName = substr($folderName, 0, $dividers[4]+1).$name.substr($folderName, $dividers[4]+5, strlen($folderName)-$dividers[4]-6);
-          return $folderName;   
-        }
-        print $folderName;
-    }
-    public function _getFoldersForWorkers()
-    {
-        $folders = $this->_getShortNames();
-        $foldersForWorkers = array();
-        for ($i = 0, $c = count($folders); $i < $c; $i++)
-        {
-            if($this->_getFoldersStatus('calibrated')[$i] == 'true')
-            {
-                if($this->_getFoldersStatus('processed')[$i] == 'false')
-                {
-                    array_push($foldersForWorkers, $folders[$i]);
-                }  
-            }  
-        }
-        return $foldersForWorkers;
-    }
     public function _sendRegisterNotification($data)
     {
         $user = $data['email'];
-        $registerSupervisors = ['Gornushkin75@mail.ru', 'nshapovalovn@yandex.ru', 'mae664128@gmail.com', 'ae.ermakov995@gmail.com'];
+        $registerSupervisors = ['Gornushkin75@mail.ru', 'nshapovalovn@yandex.ru', 'mae664128@gmail.com', 'ae.ermakov995@gmail.com', 'liirus91@gmail.com'];
         $subject = 'Регистрация на сайте www.medinnovations.com';
 
         $message = '<div>Добро пожаловать!</div>
@@ -257,7 +173,7 @@ class MY_Controller extends CI_Controller {
     }
     public function _sendUploadNote($username, $email, $role)
     {
-        $Supervisors = ['Gornushkin75@mail.ru','mae664128@gmail.com', 'nshapovalovn@yandex.ru', 'ae.ermakov995@gmail.com', 'nozhenkin.vasiliy@mail.ru'];
+        $Supervisors = ['Gornushkin75@mail.ru','mae664128@gmail.com', 'nshapovalovn@yandex.ru', 'ae.ermakov995@gmail.com', 'nozhenkin.vasiliy@mail.ru', 'liirus91@gmail.com'];
         $subject = 'Загрузка снимков на сайте www.medinnovations.ru';
 
         if ($role == 'Individual') {
@@ -305,52 +221,6 @@ class MY_Controller extends CI_Controller {
         for ($i=0, $l = count($Supervisors); $i < $l; $i++) { 
             mail($Supervisors[$i], $subject, $messageForSupervisors, $headers);
         }
-    }
-    public function _sendReportTasks($numTasks) 
-    {
-        $date = new DateTime("now");
-
-        $currDate = $date->format('Y-m-d');
-        $user = 'daniilden@gmail.com';
-
-        $subject = 'Отчёт (Количество заданий) за '.$currDate;
-        $message = '<div>За сегодняшний день создано '.$numTasks.' заданий(е).</div>
-                    <div>C уважением, ваш http://medinnovations.ru</div>';
-        $headers = "MIME-Version: 1.0\r\n";
-        $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n"; 
-
-        mail($user, $subject, $message, $headers);
-    }
-    public function _sendReportSalary($workers)
-    {
-        $date = new DateTime("now");
-
-        $currDate = $date->format('Y-m-d');
-        $user = 'daniilden@gmail.com';
-        
-        $message = '<table>
-                       <tbody>
-                       <thead>
-                       <tr>
-                         <th>#</th>
-                         <th>Обработчик</th>
-                         <th>Количество заданий</th>
-                       </tr>
-                     </thead>
-                     <tbody>';
-        $subject = 'Отчёт (Количество заданий) за '.$currDate;
-        foreach ($workers as $key => $w) {
-            $message .= "<tr>"
-                    ."<td>".$w['id']."</td>"
-                    ."<td>".$w['worker']."</td>"
-                    ."<td>".$w['tasks']."</td>"
-                    ."</tr>";  
-        }
-        $message .= '</tbody>';
-        $headers = "MIME-Version: 1.0\r\n";
-        $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n"; 
-
-        mail($user, $subject, $message, $headers);
     }
     public function _testSend() 
     {

@@ -1,19 +1,30 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 class Tasks extends MY_Controller {
+    private $html = $defaultHtml;
+    private $user = $defaultUser;
+    private $table = $defaultTable;
+    private $language = $defaultLanguage;
+    private $data = $defaultData;
 
-    public function __construct($lang='')
+    public function __construct($html, $user, 
+                                $table, $language, 
+                                $data)
     {
-        parent::__construct();
-        $this->_defineLanguage($lang);
-        $this->text = $this->lang->{'language'};
+        $this->html = $html;
+        $this->user = $user;
+        $this->table = $table;
+        $this->language = $language;
+        $this->data = $data;       
     }
-    /*public function Renderer() {
-        $this->data['url'] = $this->_defineURL(__FUNCTION__);
-        $this->data['content'] = $this->_defineRoleView(__FUNCTION__, false);
-        $this->data['tag_title'] = 'Ваши задания';
-        $this->load->view($this->template, $this->data);
-    }*/
+    public function getUser($details) 
+    {
+        return $this->user[$details];
+    }
+    public function getData($details)
+    {
+        return $this->data[$details];
+    }
     public function Supervisor($filterName = " ", $filterParam = " ")
     {
         $this->load->model('tasks_model');
@@ -89,7 +100,7 @@ class Tasks extends MY_Controller {
                        'username'          => $this->data['username'],
                        'tasks'             => $tasks,
                        'events'            => $events,
-                       'content'           => $this->_defineRoleView(__FUNCTION__, false),
+                       'content'           => $this->_defineRoleView(__FUNCTION__, true),
                        'url'               => $this->_defineURL(__FUNCTION__),
                        'filter'            => $filter,
                        'tag_title'         => 'Список заданий',
@@ -122,36 +133,11 @@ class Tasks extends MY_Controller {
             $taskExists = $this->tasks_model->exists($id);
             if ($taskExists == true) {
                 $this->tasks_model->updateCertainField($id, 'Удалено', 'status');
-                /*if ($this->data['role'] === 'Worker') {
-                    echo "OK";
-                }
-                elseif ($this->data['role'] === 'Individual' ||
-                    $this->data['role'] === 'Organization' ||
-                    $this->data['role'] === 'Moderator' ||
-                    $this->data['role'] === 'Admin' ||
-                    $this->data['role'] === 'Doctor')
-                {
-                    echo "OK";
-                }*/
             }
             else {
                 show_404();
             }
     }
-
-    /*public function take($id) {
-        $name = $this->_defineName();
-        $this->tasks_model->updateDbField($id, $name);
-        redirect('Tasks');
-    }
-    public function done($id) {
-        $this->load->model('login_model');
-        $task = $this->tasks_model->showById($id);
-        $user = $this->login_model->showByField($task['customer'], 'name');
-        $this->tasks_model->updateCertainField($id, 'pending', 'processed');
-        $this->_sendEndTaskNote($user[0], $id);
-        redirect('Tasks/received');
-    }*/
     public function provided($lang='') {
         //Меню
         $role = $this->_defineRole();
@@ -211,49 +197,6 @@ class Tasks extends MY_Controller {
         $this->data['css'] = ['background.css', 'provided.css'];
         $this->load->view($this->template, $this->data);
     }
-    /*public function changePrice($taskId) {
-        $this->load->model('login_model');
-        $task = $this->tasks_model->showById($taskId);
-        $this->data['url'] = $this->_defineURL(__FUNCTION__);
-        $this->data['content'] = $this->_defineRoleView(__FUNCTION__, false);
-
-        $this->data['taskId'] = $taskId;
-        $customer = $task['customer'];
-        $condition = ['name'=> $customer];
-        $user = $this->login_model->where($condition)[0];
-        $userEmail = $user['email'];
-        $this->load->view($this->template, $this->data);
-        if (isset($_POST['cost'])) {
-            $cost = $_POST['cost'];
-            $this->tasks_model->updateCertainField($taskId, $cost, 'cost');
-            $this->_sendPriceSetNote($userEmail, $taskId);
-            echo '<div class="alert alert-success">Вы успешно изменили цену</div>';
-            if ($this->_defineRole() === 'Admin') {
-                redirect('Tasks/provided'.$lang);
-            }
-
-        }
-
-    }*/
-    /*public function changeDescription($taskId) {
-        $this->data['menu'] = null;
-        $task = $this->tasks_model->showById($taskId);
-        $this->data['url'] = $this->_defineURL(__FUNCTION__);
-        $this->data['content'] = $this->_defineRoleView(__FUNCTION__, false);
-
-        $this->data['taskId'] = $taskId;
-        $customer = $task['customer'];
-        $condition = ['name'=> $customer];
-        $user = $this->login_model->where($condition)[0];
-        $userEmail = $user['email'];
-        $this->load->view($this->template, $this->data);
-        if (isset($_POST['description'])) {
-            $description = $_POST['description'];
-            $this->tasks_model->updateCertainField($taskId, $description, 'description');
-            redirect('Tasks/provided'.$lang);
-        }
-
-    }*/
     public function ajaxChangeStatus($taskId)
     {
         $this->load->model('t_events_model');
@@ -346,43 +289,10 @@ class Tasks extends MY_Controller {
         }
 
     }
-    /*public function changeReceipts($taskId) {
-        $receipts = [];
-        if (empty($_POST['column'])) {
-            $receipts = '0,0,0,0,0';
-            $this->tasks_model->updateCertainField($taskId, $receipts, 'receipts');
-        }
-        if (isset($_POST['column'])) {
-
-            foreach ($_POST['column'] as $receipt) {
-                $receipts[$receipt] = 1;
-            }
-            for ($i = 0; $i <= 4; $i++) {
-                if (array_key_exists($i, $receipts)) {
-
-                }
-                else {
-                  $receipts[$i] = 0;
-                }
-            }
-            ksort($receipts);
-            $receipts = implode(',', $receipts);
-            $this->tasks_model->updateCertainField($taskId, $receipts, 'receipts');
-
-        }
-        redirect('Tasks/'.$lang);
-
-    }*/
     public function changeOrgan($taskId) {
         $task = $this->tasks_model->showById($taskId);
         $this->data['url'] = $this->_defineURL(__FUNCTION__);
         $this->data['content'] = $this->_defineRoleView(__FUNCTION__, false);
-        if ($this->_defineRole() === 'Supervisor') {
-        $this->data['menu'] = [$this->text['HEADER_PROFILE']      => base_url().'Profile/',
-                               $this->text['HEADER_TASKS']        => base_url().'Tasks/',
-                               'Обработчики'                      => base_url().'Workers/',
-                               'Создать обработчика'              => base_url().'Users/createWorker/'];
-        }
         $this->data['taskId'] = $taskId;
 
         $this->load->view($this->template, $this->data);

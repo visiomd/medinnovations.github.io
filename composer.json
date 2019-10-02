@@ -1,5 +1,5 @@
 {
-	"description": "The CodeIgniter framework",
+	"description": "Medinnovations.ru",
 	"name": "codeigniter/framework",
 	"type": "project",
 	"homepage": "http://codeigniter.com",
@@ -12,11 +12,6 @@
 	},
 	"require": {
 		"php": ">=5.2.4",
-		"nixsolutions/yandex-php-library": "^2.0"
-	},
-	"require-dev": {
-		"mikey179/vfsStream": "1.1.*"
-	},
-
+		"phpoffice/phpspreadsheet": "^1.8"
+	}
 }
-

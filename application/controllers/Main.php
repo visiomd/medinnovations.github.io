@@ -7,8 +7,7 @@ class Main extends MY_Controller {
         parent::__construct();
     }
    	public function index($lang='') 
-	{
-        $this->_defineLogStatus($lang);
+	  {
         $this->_defineLanguage($lang);
         $text = $this->lang->{'language'};
         $data = array('css'                => ['main.css'],
@@ -20,6 +19,6 @@ class Main extends MY_Controller {
                       'content'            => $this->_defineRoleView(__FUNCTION__, true),
                       'username'           => $this->data['username'],
                       'tag_title'          => 'Главная страница');
-	$this->load->view($this->template, $data);
+	      $this->load->view($this->template, $data);
 	}
 }
